@@ -9,6 +9,8 @@ import { BUTTON } from "../Button";
 import useDebounce from "../../hooks/useDebounce";
 import { useSearchRepositoriesQuery } from "../../services/githubApi";
 import { Repository } from "../Card";
+import Card from "../Card/Card";
+import { CardsContainer } from "./Search.styled";
 
 const Search = () => {
   const [searchString, setSearchString] = useState("");
@@ -41,16 +43,12 @@ const Search = () => {
         </SearchStringForm>
       </SearchContainer>
       {isFetching ? <div>Загрузка...</div> : null}
-      {data?.items && (
-        <ul>
-          {data.items.map((repo: Repository) => (
-            <li key={repo.id}>
-              <a href={repo.html_url} target="_blank" rel="noreferrer">
-                {repo.full_name}
-              </a>
-            </li>
+      {data && (
+        <CardsContainer>
+          {data.items.slice(0, 6).map((repo: Repository) => (
+            <Card key={repo.id} repo={repo} />
           ))}
-        </ul>
+        </CardsContainer>
       )}
     </>
   );

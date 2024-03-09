@@ -1,5 +1,14 @@
 import styled from "styled-components";
 
+export const CardsContainer = styled.div`
+  padding-top: 3.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2.3rem 2.8rem;
+
+`
+
 export const SearchContainer = styled.div`
   height: 147px;
   background-color: #dddddd;

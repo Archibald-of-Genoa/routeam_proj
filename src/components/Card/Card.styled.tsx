@@ -19,8 +19,8 @@ export const UserContainer = styled.div`
 `;
 
 export const IMG = styled.img`
-  display: flex;
-  flex-basis: 5rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 `;
 

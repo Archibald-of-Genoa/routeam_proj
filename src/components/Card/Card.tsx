@@ -37,7 +37,7 @@ export interface CardProps {
 const Card = ({ repo }: CardProps) => {
   return (
     <CardContainer>
-      <a href={"repo.html_url"} target="_blank" rel="noopener norefferer">
+      <a href={repo.html_url} target="_blank" rel="noopener norefferer">
         <H2>{repo.full_name}</H2>
       </a>
       <UserContainer>
