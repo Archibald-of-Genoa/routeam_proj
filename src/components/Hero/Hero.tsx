@@ -5,12 +5,7 @@ const Hero = () => {
   return (
     <HeroContainer>
       <CardsContainer>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+
       </CardsContainer>
     </HeroContainer>
   );

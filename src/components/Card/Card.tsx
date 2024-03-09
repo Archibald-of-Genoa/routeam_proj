@@ -1,6 +1,7 @@
 import { H2, H3 } from "../Heading";
 import {
-  CardContainer, CommentsForm,
+  CardContainer,
+  CommentsForm,
   CommentsInput,
   CommentsLabel,
   IMG,
@@ -8,39 +9,60 @@ import {
   StarWatchContainer,
   UserContainer,
   UserName,
-  WatchContainer
+  WatchContainer,
 } from "./Card.styled";
 import garold from "../../assets/Garold.png";
 import { Icon } from "../Icon/Icon";
 import { BUTTON } from "../Button";
 
-const Card = () => {
+export interface Owner {
+  login: string;
+  avatar_url: string;
+}
+
+export interface Repository {
+  name: string;
+  owner: Owner;
+  stargazers_count: number;
+  watchers_count: number;
+  html_url: string;
+}
+
+export interface CardProps {
+  repo: Repository;
+}
+
+const Card = ({ repo }: CardProps) => {
   return (
     <CardContainer>
-      <H2>Название</H2>
+      <a href={"repo.html.url"} target="_blank" rel="noopener norefferer">
+        <H2>{repo.name}</H2>
+      </a>
       <UserContainer>
-        <IMG src={garold} />
+        <IMG src={repo.owner.avatar_url} alt={garold} />
         <UserName>
-          <H3>User name</H3>
+          <H3>{repo.owner.login}</H3>
         </UserName>
       </UserContainer>
       <StarWatchContainer>
         <StarContainer>
           <Icon name="Star" />
+          {repo.stargazers_count}
         </StarContainer>
         <WatchContainer>
           <Icon name="Watch" />
+          {repo.watchers_count}
         </WatchContainer>
       </StarWatchContainer>
 
-        <CommentsForm>
-          <CommentsLabel htmlFor="CommentsInput"></CommentsLabel>
-          <CommentsInput
-            id="commentsInput"
-            placeholder="Комментарий к проекту"
-          ></CommentsInput>
-          <BUTTON type="submit" view="edit" width="64px" height="54px"></BUTTON>
-        </CommentsForm>
+      <CommentsForm>
+        <CommentsLabel htmlFor="CommentsInput"></CommentsLabel>
+        <CommentsInput
+          id="commentsInput"
+          placeholder="Комментарий к проекту"
+        ></CommentsInput>
+        <BUTTON type="submit" view="edit" width="64px" height="54px"></BUTTON>
+      </CommentsForm>
     </CardContainer>
   );
 };
