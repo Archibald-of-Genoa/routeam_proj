@@ -1,13 +1,18 @@
 import styled from "styled-components";
 
-export const CardsContainer = styled.div`
+interface CardsContainerProps {
+  perPage: number;
+}
+
+export const CardsContainer = styled.div<CardsContainerProps>`
   padding-top: 3.4rem;
+  padding-bottom: 5.8rem;
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(${(props) => Math.ceil(props.perPage / 3)}, 1fr);
   gap: 2.3rem 2.8rem;
-
-`
+`;
 
 export const SearchContainer = styled.div`
   height: 147px;
@@ -28,7 +33,6 @@ export const SearchStringForm = styled.form`
 export const SearchStringLabel = styled.label`
   border: none;
   flex-grow: 2;
-
 `;
 
 export const SearchStringInput = styled.input`

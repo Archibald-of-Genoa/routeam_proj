@@ -11,18 +11,28 @@ import { useSearchRepositoriesQuery } from "../../services/githubApi";
 import { Repository } from "../Card";
 import Card from "../Card/Card";
 import { CardsContainer } from "./Search.styled";
+import ItemsPerPageSelector from "../ItemsPerPageSelector/ItemsPerPageSelector";
 
 const Search = () => {
   const [searchString, setSearchString] = useState("");
   const debouncedSearchTerm = useDebounce(searchString, 300);
+  const [perPage, setPerPage] = useState(10);
 
-  const { data, isFetching } = useSearchRepositoriesQuery(debouncedSearchTerm, {
-    skip: debouncedSearchTerm.length < 3,
-  });
+  const { data, isFetching } = useSearchRepositoriesQuery(
+    { searchTerm: debouncedSearchTerm, perPage },
+    { skip: debouncedSearchTerm.length < 3 }
+  );
+
+  console.log({ searchString, perPage, data });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
   };
+
+  const handlePerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setPerPage(Number(e.target.value));
+  };
+
   return (
     <>
       <SearchContainer>
@@ -41,15 +51,18 @@ const Search = () => {
             height="68px"
           ></BUTTON>
         </SearchStringForm>
+        
       </SearchContainer>
       {isFetching ? <div>Загрузка...</div> : null}
       {data && (
-        <CardsContainer>
-          {data.items.slice(0, 6).map((repo: Repository) => (
+        <CardsContainer perPage={perPage}>
+          {data.items.map((repo: Repository) => (
             <Card key={repo.id} repo={repo} />
           ))}
         </CardsContainer>
       )}
+
+      <ItemsPerPageSelector value={perPage} onChange={handlePerPageChange} />
     </>
   );
 };
