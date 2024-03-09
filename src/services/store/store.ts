@@ -1,8 +1,11 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { githubApi } from "../githubApi";
+import commentsReducer from '../slices/commentsSlice'
+
 
 const rootReducer = combineReducers({
   [githubApi.reducerPath]: githubApi.reducer,
+  comments: commentsReducer,
 });
 
 export const setupStore = () => {

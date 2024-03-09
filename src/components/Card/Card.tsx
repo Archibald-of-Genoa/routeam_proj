@@ -14,6 +14,10 @@ import {
 import garold from "../../assets/Garold.png";
 import { Icon } from "../Icon/Icon";
 import { BUTTON } from "../Button";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../services/store/store";
+import { useState } from "react";
+import { addComment } from "../../services/slices/commentsSlice";
 
 export interface Owner {
   login: string;
@@ -34,6 +38,14 @@ export interface CardProps {
 }
 
 const Card = ({ repo }: CardProps) => {
+  const dispatch = useDispatch();
+  const comment = useSelector((state: RootState) => state.comments.comments[repo.id] || '');
+  const [inputValue, setInputValue] = useState(comment);
+  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(addComment({ repoId: repo.id, comment: inputValue }));
+  };
+
   return (
     <CardContainer>
       <a href={repo.html_url} target="_blank" rel="noopener norefferer">
@@ -62,10 +74,12 @@ const Card = ({ repo }: CardProps) => {
         </WatchContainer>
       </StarWatchContainer>
 
-      <CommentsForm>
+      <CommentsForm onSubmit={handleCommentSubmit}>
         <CommentsLabel htmlFor="CommentsInput"></CommentsLabel>
         <CommentsInput
           id="commentsInput"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           placeholder="Комментарий к проекту"
         ></CommentsInput>
         <BUTTON type="submit" view="edit" width="64px" height="54px"></BUTTON>
