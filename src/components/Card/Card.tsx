@@ -21,11 +21,13 @@ export interface Owner {
 }
 
 export interface Repository {
-  name: string;
-  owner: Owner;
+  id: number;
+  full_name: string;
   stargazers_count: number;
   watchers_count: number;
   html_url: string;
+  owner: Owner;
+  
 }
 
 export interface CardProps {
@@ -35,8 +37,8 @@ export interface CardProps {
 const Card = ({ repo }: CardProps) => {
   return (
     <CardContainer>
-      <a href={"repo.html.url"} target="_blank" rel="noopener norefferer">
-        <H2>{repo.name}</H2>
+      <a href={"repo.html_url"} target="_blank" rel="noopener norefferer">
+        <H2>{repo.full_name}</H2>
       </a>
       <UserContainer>
         <IMG src={repo.owner.avatar_url} alt={garold} />
