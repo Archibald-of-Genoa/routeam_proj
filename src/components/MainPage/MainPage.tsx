@@ -1,3 +1,4 @@
+import Paginator from "../Paginator/Paginator";
 import Search from "../Search/Search";
 import { ContainerStyled } from "./MainPage.styled";
 

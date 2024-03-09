@@ -12,21 +12,25 @@ import { Repository } from "../Card";
 import Card from "../Card/Card";
 import { CardsContainer } from "./Search.styled";
 import ItemsPerPageSelector from "../ItemsPerPageSelector/ItemsPerPageSelector";
+import Paginator from "../Paginator/Paginator";
 
 const Search = () => {
   const [searchString, setSearchString] = useState("");
   const debouncedSearchTerm = useDebounce(searchString, 300);
   const [perPage, setPerPage] = useState(10);
+  const [page, setPage] = useState(1);
 
   const { data, isFetching } = useSearchRepositoriesQuery(
-    { searchTerm: debouncedSearchTerm, perPage },
+    { searchTerm: debouncedSearchTerm, perPage, page },
     { skip: debouncedSearchTerm.length < 3 }
   );
 
-  console.log({ searchString, perPage, data });
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
   };
 
   const handlePerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -51,15 +55,16 @@ const Search = () => {
             height="68px"
           ></BUTTON>
         </SearchStringForm>
-        
       </SearchContainer>
-      {isFetching ? <div>Загрузка...</div> : null}
       {data && (
-        <CardsContainer perPage={perPage}>
-          {data.items.map((repo: Repository) => (
-            <Card key={repo.id} repo={repo} />
-          ))}
-        </CardsContainer>
+        <>
+          <CardsContainer perPage={perPage}>
+            {data.items.map((repo: Repository) => (
+              <Card key={repo.id} repo={repo} />
+            ))}
+          </CardsContainer>
+          <Paginator currentPage={page} onChange={handlePageChange} />
+        </>
       )}
 
       <ItemsPerPageSelector value={perPage} onChange={handlePerPageChange} />
