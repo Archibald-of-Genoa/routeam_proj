@@ -27,7 +27,6 @@ export interface Repository {
   watchers_count: number;
   html_url: string;
   owner: Owner;
-  
 }
 
 export interface CardProps {
@@ -43,7 +42,13 @@ const Card = ({ repo }: CardProps) => {
       <UserContainer>
         <IMG src={repo.owner.avatar_url} alt={garold} />
         <UserName>
-          <H3>{repo.owner.login}</H3>
+          <a
+            href={`https://github.com/${repo.owner.login}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <H3>{repo.owner.login}</H3>
+          </a>
         </UserName>
       </UserContainer>
       <StarWatchContainer>
