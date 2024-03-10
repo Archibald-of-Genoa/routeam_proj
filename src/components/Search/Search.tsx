@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import {
   SearchContainer,
   SearchStringForm,
@@ -15,15 +15,21 @@ import ItemsPerPageSelector from "../ItemsPerPageSelector/ItemsPerPageSelector";
 import Paginator from "../Paginator/Paginator";
 
 const Search = () => {
-  const [searchString, setSearchString] = useState("");
+  const [searchString, setSearchString] = useState(() => localStorage.getItem("searchString") || "");
   const debouncedSearchTerm = useDebounce(searchString, 300);
-  const [perPage, setPerPage] = useState(10);
-  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(() => Number(localStorage.getItem("perPage")) || 10);
+  const [page, setPage] = useState(() => Number(localStorage.getItem("page")) || 1);;
 
   const { data, isFetching } = useSearchRepositoriesQuery(
     { searchTerm: debouncedSearchTerm, perPage, page },
     { skip: debouncedSearchTerm.length < 3 }
   );
+
+  useEffect(() => {
+    localStorage.setItem("searchString", searchString);
+    localStorage.setItem("perPage", perPage.toString());
+    localStorage.setItem("page", page.toString());
+  }, [searchString, perPage, page]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
